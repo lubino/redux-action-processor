@@ -1,57 +1,73 @@
-# datetime-scheduler
-ECMAScript 6 (JavaScript) NPM module for executing scheduled tasks
+# redux-action-processor
+Redux Middleware for cleaner application logic structure
 
 ### Installation
 ``` sh
-npm i datetime-scheduler --save
+npm install --save redux-action-processor
 ```
 
 **Notice:** This module has zero NPM dependencies, but it uses ES6 language.
 
-### Usage
-This example calls *asyncTask* method every saturday and sunday at 12:15 (and 30.500 seconds)
+### Self explaining example
+Simple way to listen and react to dispatched actions.
+
+Redux store:
 ``` javascript
-const {createScheduler} = require('datetime-scheduler');
+import {createStore, compose, applyMiddleware} from 'redux'
+import {createContext, createMiddleware} from 'redux-action-processor'
+import {rootReducer, STATE} from './rootReducer' // my root reducer
 
-const configuration = {
-    "days": {
-        "sunday":    true,
-        "monday":    false,
-        "tuesday":   false,
-        "wednesday": false,
-        "thursday":  false,
-        "friday":    false,
-        "saturday":  true
-    },
-    "time": {
-        "hours": 12,
-        "minutes":15,
-        "seconds": 30,
-        "millis": 500
-    }
-};
+// you can have pleanty of contexts, or only one as global parameter
+export const context = createContext();
+const myMiddleware = createMiddleware(context);
 
-const options = {
-    asyncTask: async () => {
-        console.log("Doing staff");
-        await new Promise(resolve => setTimeout(resolve, 10000));
-        console.log("Finishing staff");
-    }
-};
-
-createScheduler("weekend at 12:15:30.500", configuration, options);
+export const store = createStore(
+    rootReducer,
+    STATE,
+    applyMiddleware(myMiddleware)
+);
 ```
 
-In case you need only one execution on a specific day
+Listen and react to dispatched actions anywhere:
 ``` javascript
-const specificDay = "2019-05-18T19:30:00.000Z";
-const configuration = {
-    "timestamp": new Date(specificDay).getTime()
-};
+import {registerCallAction} from 'redux-action-processor'
+
+registerCallAction('ACTION_TYPE', context, async (action) => {
+    console.log("Woow, action.type === 'ACTION_TYPE' has been dispatched");
+    const result = await doSomethingToGetSomeResult();
+    if (!result) throw new Error('Ouch, result is not here');
+    return result; 
+})
+//optional Promise like 'then' methods
+.then( result => {
+    console.log('something optional to do');
+    return result;
+})
+.then( result => {
+    console.log('something else to do');
+    return result;
+})
+// calling optional 'thenDispatchResult' or 'thenDispatchError' means
+// that after async function finishes execution, the result (or exception) is  
+// dispatched using given action creator
+.thenDispatchResult( (result, action) => anotherActionCreator(result, action) )
+.thenDispatchError( (error, action) => anotherExceptionalActionCreator(error, action) )
+
+function anotherActionCreator(data, action) {
+    return {
+        type:'ACTION_TYPE_SUCCESS',
+        someAttributesOfNewActionToDispatch: {data, action}
+    }
+}
+
+function anotherExceptionalActionCreator(error, action) {
+    return {
+        type:'ACTION_TYPE_FAILED',
+        someAttributesOfNewActionToDispatch: {error, action}
+    }
+}
+
 ```
-
-
-Check [weekend.js](https://github.com/lubino/datetime-scheduler/blob/master/example/weekend.js) for a working example.
 
 ### License
 MIT License

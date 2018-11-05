@@ -1,8 +1,8 @@
 {
-  "name": "datetime-scheduler",
+  "name": "redux-action-processor",
   "version": "1.0.0",
-  "description": "Scheduler for executing scheduled tasks",
-  "main": "scheduler.js",
+  "description": "Redux Middleware for cleaner application logic structure",
+  "main": "action-processor.js",
   "scripts": {
   },
   "github-pages-deploy": {
@@ -18,7 +18,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/lubino/datetime-scheduler.git"
+    "url": "git+https://github.com/lubino/redux-action-processor.git"
   },
   "keywords": [
     "ES6",
@@ -26,7 +26,7 @@
     "scheduler"
   ],
   "bugs": {
-    "url": "https://github.com/lubino/datetime-scheduler/issues"
+    "url": "https://github.com/lubino/redux-action-processor/issues"
   },
-  "homepage": "https://github.com/lubino/datetime-scheduler#readme"
+  "homepage": "https://github.com/lubino/redux-action-processor#readme"
 }
