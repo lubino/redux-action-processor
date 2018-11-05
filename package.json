@@ -1,0 +1,32 @@
+{
+  "name": "datetime-scheduler",
+  "version": "1.0.0",
+  "description": "Scheduler for executing scheduled tasks",
+  "main": "scheduler.js",
+  "scripts": {
+  },
+  "github-pages-deploy": {
+    "src": "example"
+  },
+  "author": "Lubos Strapko",
+  "license": "MIT License",
+  "peerDependencies": {
+  },
+  "devDependencies": {
+  },
+  "dependencies": {
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lubino/datetime-scheduler.git"
+  },
+  "keywords": [
+    "ES6",
+    "timestamp",
+    "scheduler"
+  ],
+  "bugs": {
+    "url": "https://github.com/lubino/datetime-scheduler/issues"
+  },
+  "homepage": "https://github.com/lubino/datetime-scheduler#readme"
+}

@@ -1,0 +1,11 @@
+# User-specific stuff
+.idea/*
+
+# File-based project format
+*.iws
+*.iml
+*.ipr
+
+# npm dependencies
+node_modules
+
