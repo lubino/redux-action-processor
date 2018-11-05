@@ -11,7 +11,13 @@ export function createContext() {
     }
 }
 
-export const createMiddleware = context => store => {
+let globalContext;
+const defaultContext = () => {
+    if (!globalContext) globalContext = createContext();
+    return globalContext;
+};
+
+export const createMiddleware = (context = defaultContext()) => store => {
     context.setStore(store);
     return next => action => {
         const actionListener = action && context.getActionListener(action.type);
@@ -22,7 +28,7 @@ export const createMiddleware = context => store => {
     };
 };
 
-function createCollector(context) {
+function createCollector(context = defaultContext()) {
 
     const resolveActionCreators = [];
     const rejectActionCreators = [];
@@ -78,7 +84,12 @@ function createCollector(context) {
     }
 }
 
-export function registerCallAction(actionType, context, method) {
+export function registerCallAction(actionType, /* optional */ context, method) {
+    if (!method && typeof context === 'function') {
+        method = context;
+        context = defaultContext();
+    }
+
     const {handleAction, collector} = createCollector(context);
     const actionTypes = actionType && Array.isArray(actionType) ? actionType : [actionType];
     actionTypes.map(actionType => {

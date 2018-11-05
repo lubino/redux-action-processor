@@ -14,6 +14,40 @@ Simple way to listen and react to dispatched actions.
 Redux store:
 ``` javascript
 import {createStore, compose, applyMiddleware} from 'redux'
+import {createMiddleware} from 'redux-action-processor'
+import {rootReducer, STATE} from './rootReducer' // my root reducer
+
+// you can have pleanty of contexts, or only one as global parameter
+const myMiddleware = createMiddleware();
+
+export const store = createStore(
+    rootReducer,
+    STATE,
+    applyMiddleware(myMiddleware)
+);
+```
+
+Listen and react to dispatched actions anywhere:
+``` javascript
+import {registerCallAction} from 'redux-action-processor'
+
+registerCallAction('ACTION_TYPE', async (action) => {
+    console.log("Woow, action.type === 'ACTION_TYPE' has been dispatched");
+    const result = await doSomethingToGetSomeResult();
+    if (!result) throw new Error('Ouch, result is not here');
+    return result; 
+})
+.thenDispatchResult( result => ({type: 'ACTION_TYPE_SUCCESS', result}) ) // this line is optional
+.thenDispatchError( error => ({type: 'ACTION_TYPE_FAILED', error}) ) // this line is optional
+
+```
+
+### More robust example
+Complex way to listen and react to dispatched actions.
+
+Redux store:
+``` javascript
+import {createStore, compose, applyMiddleware} from 'redux'
 import {createContext, createMiddleware} from 'redux-action-processor'
 import {rootReducer, STATE} from './rootReducer' // my root reducer
 
@@ -56,14 +90,14 @@ registerCallAction('ACTION_TYPE', context, async (action) => {
 function anotherActionCreator(data, action) {
     return {
         type:'ACTION_TYPE_SUCCESS',
-        someAttributesOfNewActionToDispatch: {data, action}
+        someAttributesOfNewActionToDispatch: {data, reactionToAction: action}
     }
 }
 
 function anotherExceptionalActionCreator(error, action) {
     return {
         type:'ACTION_TYPE_FAILED',
-        someAttributesOfNewActionToDispatch: {error, action}
+        someAttributesOfNewActionToDispatch: {error, reactionToAction: action}
     }
 }
 
