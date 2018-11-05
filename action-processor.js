@@ -84,7 +84,7 @@ function createCollector(context = defaultContext()) {
     }
 }
 
-export function registerCallAction(actionType, /* optional */ context, method) {
+export function registerCallAction(actionType, context, method) {
     if (!method && typeof context === 'function') {
         method = context;
         context = defaultContext();
