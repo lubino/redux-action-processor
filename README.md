@@ -6,7 +6,7 @@ Redux Middleware for cleaner application logic structure
 npm install --save redux-action-processor
 ```
 
-**Notice:** This module has zero NPM dependencies, but it uses ES6 language.
+**Notice:** This module has zero NPM dependencies.
 
 ### Self explaining example
 Simple way to listen and react to dispatched actions.

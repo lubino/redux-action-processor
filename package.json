@@ -1,8 +1,8 @@
 {
   "name": "redux-action-processor",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Redux Middleware for cleaner application logic structure",
-  "main": "action-processor.js",
+  "main": "action-processor.2015.js",
   "scripts": {
   },
   "github-pages-deploy": {
